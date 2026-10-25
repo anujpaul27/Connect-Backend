@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import bcrypt from 'bcryptjs';
-import { User } from '../models/user.model';
-import { generateToken } from '../utils/jwt.utils';
-import { AuthenticatedRequest } from '../middlewares/auth.middleware';
+import { Request, Response, NextFunction } from "express";
+import bcrypt from "bcryptjs";
+import { User } from "../models/user.model";
+import { generateToken } from "../utils/jwt.utils";
+import { AuthenticatedRequest } from "../middlewares/auth.middleware";
 
 /**
  * Helper to attach JWT token to response headers and HTTP-only cookie
@@ -11,22 +11,22 @@ const sendTokenResponse = (
   user: any,
   statusCode: number,
   res: Response,
-  message: string
+  message: string,
 ) => {
   const token = generateToken(user._id.toString(), user.role);
 
   // Set response headers
-  res.setHeader('Authorization', `Bearer ${token}`);
-  res.setHeader('token', token);
+  res.setHeader("Authorization", `Bearer ${token}`);
+  res.setHeader("token", token);
 
   // Set cookie (valid for 7 days)
   const cookieOptions = {
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === "production",
   };
 
-  res.cookie('token', token, cookieOptions);
+  res.cookie("token", token, cookieOptions);
 
   res.status(statusCode).json({
     success: true,
@@ -50,7 +50,7 @@ const sendTokenResponse = (
 export const register = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const { name, email, password } = req.body;
@@ -58,7 +58,7 @@ export const register = async (
     if (!name || !email || !password) {
       res.status(400).json({
         success: false,
-        message: 'Please provide name, email, and password.',
+        message: "Please provide name, email, and password.",
       });
       return;
     }
@@ -67,7 +67,7 @@ export const register = async (
     if (existingUser) {
       res.status(400).json({
         success: false,
-        message: 'User already exists with this email.',
+        message: "User already exists with this email.",
       });
       return;
     }
@@ -82,7 +82,7 @@ export const register = async (
       password: hashedPassword,
     });
 
-    sendTokenResponse(user, 201, res, 'User registered successfully');
+    sendTokenResponse(user, 201, res, "User registered successfully");
   } catch (error) {
     next(error);
   }
@@ -96,7 +96,7 @@ export const register = async (
 export const login = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const { email, password } = req.body;
@@ -104,16 +104,16 @@ export const login = async (
     if (!email || !password) {
       res.status(400).json({
         success: false,
-        message: 'Please provide email and password.',
+        message: "Please provide email and password.",
       });
       return;
     }
 
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select("+password");
     if (!user) {
       res.status(401).json({
         success: false,
-        message: 'Do not have any user with this email.',
+        message: "Do not have any user with this email.",
       });
       return;
     }
@@ -123,13 +123,14 @@ export const login = async (
     if (!isMatch) {
       res.status(401).json({
         success: false,
-        message: 'Do not match your password.',
+        message: "Do not match your password.",
       });
       return;
     }
 
-    sendTokenResponse(user, 200, res, 'User logged in successfully');
+    sendTokenResponse(user, 200, res, "User logged in successfully");
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -142,13 +143,13 @@ export const login = async (
 export const getProfile = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     if (!req.user) {
       res.status(404).json({
         success: false,
-        message: 'User not found.',
+        message: "User not found.",
       });
       return;
     }
@@ -166,4 +167,16 @@ export const getProfile = async (
   } catch (error) {
     next(error);
   }
+};
+
+export const getAllUser = async (
+  req: AuthenticatedRequest,
+  res: Response,
+): Promise<void> => {
+  try 
+  {
+    
+    
+  } 
+  catch (error) {}
 };
