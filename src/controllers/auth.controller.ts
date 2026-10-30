@@ -172,11 +172,18 @@ export const getProfile = async (
 export const getAllUser = async (
   req: AuthenticatedRequest,
   res: Response,
+  next: NextFunction,
 ): Promise<void> => {
   try 
   {
-    
-    
+    const all = await User.find()
+
+    res.status(200).json({
+      success: true ,
+      users: all
+    })
   } 
-  catch (error) {}
+  catch (error) {
+    next(error);
+  }
 };
