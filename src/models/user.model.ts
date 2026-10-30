@@ -1,65 +1,39 @@
-import { Schema, model, Document } from 'mongoose';
-
+import { Schema, model, Document } from "mongoose";
 export interface IUser extends Document {
-  id: string;
   name: string;
-  avatar: string;
-  status: 'online' | 'offline' | 'away'; 
-  role: string;
-  bio?: string;
-  lastSeen: string;
-  unreadCount: number;
+  email: string;
+  password: string;
+  role: "user" | "admin";
+  createdAt: Date;
+  updatedAt: Date;
 }
-
 const userSchema = new Schema<IUser>(
   {
-    id: {
-      type: String,
-      required: [true, 'User ID is required'],
-      unique: true,
-      trim: true,
-    },
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, "Name is required"],
       trim: true,
-      maxlength: [50, 'Name cannot exceed 50 characters'],
+      maxlength: [50, "Name cannot exceed 50 characters"],
     },
-    avatar: {
+    email: {
       type: String,
-      default: '',
-    },
-    status: {
-      type: String,
-      enum: ['online', 'offline', 'away'],
-      default: 'offline',
-    },
-    role: {
-      type: String,
-      required: [true, 'Role is required'],
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
       trim: true,
+      match: [
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+        "Please provide a valid email address",
+      ],
     },
-    bio: {
+    password: {
       type: String,
-      maxlength: [160, 'Bio cannot exceed 160 characters'],
-      default: '',
+      required: [true, "Password is required"],
+      minlength: [6, "Password must be at least 6 characters long"],
+      select: false,
     },
-    lastSeen: {
-      type: String,
-      default: 'Just now',
-    },
-    unreadCount: {
-      type: Number,
-      default: 0,
-      min: [0, 'Unread count cannot be negative'],
-    },
+    role: { type: String, enum: ["user", "admin"], default: "user" },
   },
-  {
-    timestamps: true,
-    // Automatically map virtual 'id' to JSON outputs if needed
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
+  { timestamps: true },
 );
-
-export const User = model<IUser>('User', userSchema);
+export const User = model<IUser>("User", userSchema);
