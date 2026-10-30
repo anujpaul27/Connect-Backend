@@ -21,9 +21,7 @@ app.use(cookieParser());
 // Root Health Check Route
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
-    success: true,
     message: 'Authentication API Server is running smoothly!',
-    timestamp: new Date().toISOString(),
   });
 });
 
