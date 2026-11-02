@@ -174,16 +174,14 @@ export const getAllUser = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  try 
-  {
-    const all = await User.find()
+  try {
+    const all = await User.find();
 
     res.status(200).json({
-      success: true ,
-      users: all
-    })
-  } 
-  catch (error) {
+      success: true,
+      users: all,
+    });
+  } catch (error) {
     next(error);
   }
 };
