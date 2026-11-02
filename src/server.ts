@@ -5,7 +5,6 @@ dotenv.config();
 import app from "./app";
 import { connectDB } from "./config/db";
 import http from "http";
-import { Server } from "socket.io";
 import { initSocket } from "./services/socket.services";
 
 const PORT = process.env.PORT || 5000;
