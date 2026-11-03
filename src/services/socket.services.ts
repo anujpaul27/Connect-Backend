@@ -14,6 +14,7 @@ export function initSocket(server) {
     console.log(`⚡ User connected: ${socket.id}`);
 
     // Example: Handle a custom event from the client
+    // click handle somethink when you use 
     socket.on("join_room", (roomId) => {
       socket.join(roomId);
       console.log(`👥 User ${socket.id} joined room: ${roomId}`);
