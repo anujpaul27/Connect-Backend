@@ -175,7 +175,7 @@ export const getAllUser = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    // get all user from mongoDB 
+    
     const all = await User.find();
 
     res.status(200).json({
