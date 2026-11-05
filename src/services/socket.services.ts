@@ -13,12 +13,15 @@ export function initSocket(server) {
   io.on("connection", (socket) => {
     console.log(`⚡ User connected: ${socket.id}`);
 
-    // Example: Handle a custom event from the client
-    // click handle somethink when you use 
     socket.on("join_room", (roomId) => {
       socket.join(roomId);
       console.log(`👥 User ${socket.id} joined room: ${roomId}`);
     });
+
+    socket.emit('send', ()=> 
+    {
+      
+    })
 
     // 3. Handle disconnection cleanup
     socket.on("disconnect", () => {
