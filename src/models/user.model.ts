@@ -9,12 +9,7 @@ export interface IUser extends Document {
 }
 const userSchema = new Schema<IUser>(
   {
-    name: {
-      type: String,
-      required: [true, "Name is required"],
-      trim: true,
-      maxlength: [50, "Name cannot exceed 50 characters"],
-    },
+    
     email: {
       type: String,
       required: [true, "Email is required"],
