@@ -22,6 +22,7 @@ const messageSchema = new mongoose.Schema(
       required: true,
     },
     text: {
+      
       type: String,
       required: function () {
         return this.messageType === "text"; // require for text message
